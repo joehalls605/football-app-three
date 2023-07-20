@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Game from './Game';
+import Button from '../Components/Button';
 
 const Homepage = ({ setGameStarted }) => {
   const handleStartGame = (league) => {

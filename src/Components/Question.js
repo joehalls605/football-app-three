@@ -2,14 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import Hint from './Hint';
-import Button from './Button';
+import PlayerButton from './PlayerButton';
 import Score from './Score';
 
-const Question = ({ questionData, handleAnswer, footballersData, selectedLeague, answerCorrect, setAnswerCorrect}) => {
+const Question = ({ questionData, handleAnswer, footballersData, selectedLeague, currentQuestionIndex, setCurrentQuestionIndex}) => {
   const { name, nationality, position } = questionData;
   const [correctFootballer, setCorrectFootballer] = useState(null);
   const [footballerButtons, setFootballerButtons] = useState([]);
   const [score, setScore] = useState(0);
+  const [answerCorrect, setAnswerCorrect] = useState(false);
+
+
 
   useEffect(() => {
     generateFootballerButtons();
@@ -54,16 +57,20 @@ const Question = ({ questionData, handleAnswer, footballersData, selectedLeague,
         )}
         <div className="grid grid-cols-2 gap-4">
           {footballerButtons.map((footballer, index) => (
-            <Button
+            <PlayerButton
               key={index}
               name={footballer.name}
               correctAnswer={correctFootballer.name}
               setScore={setScore}
               score={score}
               handleAnswer={handleAnswer}
+              answerCorrect={answerCorrect}
               setAnswerCorrect={setAnswerCorrect}
+              setCurrentQuestionIndex={setCurrentQuestionIndex}
+              currentQuestionIndex={currentQuestionIndex}
             />
           ))}
+          
         </div>
       </div>
   );

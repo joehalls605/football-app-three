@@ -11,11 +11,10 @@ const App = () => {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [selectedLeague, setSelectedLeague] = useState('');
-  const [answerCorrect, setAnswerCorrect] = useState(false);
-
-  
+  const [answerCorrect, setAnswerCorrect] = useState(false); // Add this state for answer correctness
 
   const handleAnswer = (isCorrect) => {
+    setAnswerCorrect(isCorrect);
     if (isCorrect) {
       setScore(score + 1);
     }
@@ -27,6 +26,7 @@ const App = () => {
     setScore(0);
     setGameOver(false);
     setSelectedLeague(''); // Reset selectedLeague when restarting the game
+    setAnswerCorrect(false); // Reset answer correctness when restarting the game
   };
 
   const handleTimerFinish = () => {
@@ -58,25 +58,21 @@ const App = () => {
     }
 
     const filteredFootballersData = footballersData.filter((footballer) => footballer.league === selectedLeague);
-
-    if (currentQuestionIndex >= filteredFootballersData.length) {
-      setGameOver(true);
-      return null;
-    }
-
     const currentQuestion = filteredFootballersData[currentQuestionIndex];
 
     return (
       <div>
         <Question
           questionData={currentQuestion}
-          handleAnswer={handleAnswer}
           footballersData={filteredFootballersData}
           selectedLeague={selectedLeague}
-          answerCorrect={answerCorrect}
-          setAnswerCorrect={setAnswerCorrect}
+          setCurrentQuestionIndex={setCurrentQuestionIndex}
+          currentQuestionIndex={currentQuestionIndex}
+          handleAnswer={handleAnswer} // Pass the handleAnswer function to Question
+          answerCorrect={answerCorrect} // Pass the answerCorrect state to Question
+          setAnswerCorrect={setAnswerCorrect} // Pass the setAnswerCorrect function to Question
         />
-         {answerCorrect && (
+      {answerCorrect && (
         <div className='flex flex-col items-center'>
           <img
             src={checkMarkIcon}
@@ -85,7 +81,7 @@ const App = () => {
           />
         </div>
       )}
-        <Score score={score}/>
+        <Score score={score} />
         <Timer setGameOver={setGameOver} gameOver={gameOver} />
       </div>
     );
